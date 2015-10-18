@@ -17,7 +17,7 @@ Enable the newline insertion when saving the document in the VSCode Settings.
 
 ```json
 {
-  "files.files.insertFinalNewline": true
+  "files.insertFinalNewline": true
 }
 ```
 
