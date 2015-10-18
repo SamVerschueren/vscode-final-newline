@@ -7,7 +7,7 @@
 
 Press <kbd>F1</kbd> and narrow down the list commands by typing `extension`. Pick `Extensions: Install Extension`.
 
-![](https://github.com/SamVerschueren/vscode-linter-xo/raw/master/screenshot.png)
+![](https://github.com/SamVerschueren/vscode-final-newline/raw/master/screenshot.png)
 
 Simply pick the `final-newline` extension from the list
 
