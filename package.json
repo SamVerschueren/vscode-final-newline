@@ -1,0 +1,33 @@
+{
+  "name": "final-newline",
+  "version": "0.0.1",
+  "description": "Inserts a final newline when saving the document.",
+  "publisher": "samverschueren",
+  "engines": {
+    "vscode": "*"
+  },
+  "activationEvents": [
+		"workspaceContains:package.json"
+	],
+  "main": "./out/extension",
+  "scripts": {
+    "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
+    "compile": "node ./node_modules/vscode/bin/compile -watch -p ./"
+  },
+  "devDependencies": {
+    "vscode": "*"
+  },
+  "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "final newline configuration",
+      "properties": {
+        "files.insertFinalNewline": {
+          "type": "boolean",
+          "default": false,
+          "description": "Control whether a new line is inserted at the end of the file."
+        }
+      }
+    }
+  }
+}
