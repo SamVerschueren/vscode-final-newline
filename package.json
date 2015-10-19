@@ -1,14 +1,14 @@
 {
   "name": "final-newline",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Inserts a final newline when saving the document.",
   "publisher": "samverschueren",
   "engines": {
     "vscode": "*"
   },
   "activationEvents": [
-		"workspaceContains:package.json"
-	],
+    "workspaceContains:package.json"
+  ],
   "main": "./out/extension",
   "scripts": {
     "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
