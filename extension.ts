@@ -49,8 +49,8 @@ class FinalNewLineController {
 
 		if (lastLineContent.length !== 0) {
 			editor.edit(editBuilder => {
-				editBuilder.insert(new Position(lastLine, lastLineContent.length+1), EOL);
-			});
+				editBuilder.insert(new Position(lastLine, lastLineContent.length + 1), EOL);
+			}).then(() => doc.save());
 		}
 	}
 }
