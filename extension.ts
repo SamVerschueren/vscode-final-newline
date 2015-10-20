@@ -4,7 +4,11 @@ import {window, workspace, extensions, Disposable, Position, ReadOnlyMemento} fr
 import {EOL} from 'os';
 
 export function activate(disposables: Disposable[]) {
-	const controller = new FinalNewLineController();
+	// Load the config object
+	const config = extensions.getConfigurationMemento('files');
+
+	// Instantiate a controller
+	const controller = new FinalNewLineController(config);
 
 	disposables.push(controller);
 }
@@ -12,8 +16,11 @@ export function activate(disposables: Disposable[]) {
 class FinalNewLineController {
 
 	private _disposable: Disposable;
+	private _config: ReadOnlyMemento;
 
-	constructor() {
+	constructor(config) {
+		this._config = config;
+
 		let subscriptions: Disposable[] = [];
 
 		// Subscribe to onSave
@@ -27,7 +34,7 @@ class FinalNewLineController {
 	}
 
 	private _onEvent() {
-		extensions.getConfigurationMemento('files').getValue('insertFinalNewline', false)
+		this._config.getValue('insertFinalNewline', false)
 			.then(insertFinalNewline => {
 				if (insertFinalNewline === true) {
 					this._insertNewline();
