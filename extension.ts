@@ -1,62 +1,58 @@
 'use strict';
 
-import {window, workspace, extensions, Disposable, Position, ReadOnlyMemento} from 'vscode';
+import {window, workspace, extensions, Disposable, Position, WorkspaceConfiguration, ExtensionContext} from 'vscode';
 import {EOL} from 'os';
 
-export function activate(disposables: Disposable[]) {
-	// Load the config object
-	const config = extensions.getConfigurationMemento('files');
+export function activate(context: ExtensionContext) {
+	const config = workspace.getConfiguration('files');
 
-	// Instantiate a controller
 	const controller = new FinalNewLineController(config);
 
-	disposables.push(controller);
+	context.subscriptions.push(controller);
 }
 
 class FinalNewLineController {
 
 	private _disposable: Disposable;
-	private _config: ReadOnlyMemento;
+	private _config: WorkspaceConfiguration;
 
 	constructor(config) {
 		this._config = config;
 
 		let subscriptions: Disposable[] = [];
 
-		// Subscribe to onSave
-		workspace.onDidSaveTextDocument(this._onEvent, this, subscriptions);
+		workspace.onDidSaveTextDocument(this._onDocumentSaved, this, subscriptions);
+		workspace.onDidChangeConfiguration(this._onConfigChanged, this, subscriptions);
 
-		this._disposable = Disposable.of(...subscriptions);
+		this._disposable = Disposable.from(...subscriptions);
 	}
 
 	dispose() {
 		this._disposable.dispose();
 	}
 
-	private _onEvent() {
-		this._config.getValue('insertFinalNewline', false)
-			.then(insertFinalNewline => {
-				if (insertFinalNewline === true) {
-					this._insertNewline();
-				}
-			});
+	private _onDocumentSaved() {
+		if (this._config.get('insertFinalNewline', false) === true) {
+			this._insertFinalNewline();
+		}
 	}
 
-	private _insertNewline() {
-		const editor = window.getActiveTextEditor();
-		if (!editor) {
+	private _onConfigChanged() {
+		this._config = workspace.getConfiguration('files');
+	}
+
+	private _insertFinalNewline() {
+		if (!window.activeTextEditor) {
 			return;
 		}
 
-		const doc = editor.getTextDocument();
-		const docContent = doc.getText();
+		const doc = window.activeTextEditor.document;
 
-		const lastLine = doc.getLineCount();
-		const lastLineContent = doc.getTextOnLine(lastLine);
+		const lastLine = doc.lineAt(doc.lineCount - 1);
 
-		if (lastLineContent.length !== 0) {
-			editor.edit(editBuilder => {
-				editBuilder.insert(new Position(lastLine, lastLineContent.length + 1), EOL);
+		if (lastLine.isEmptyOrWhitespace === false) {
+			window.activeTextEditor.edit(editBuilder => {
+				editBuilder.insert(new Position(doc.lineCount - 1, lastLine.text.length), EOL);
 			}).then(() => doc.save());
 		}
 	}
