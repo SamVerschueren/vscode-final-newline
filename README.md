@@ -2,6 +2,8 @@
 
 > Inserts a final newline when saving the document.
 
+The [EditorConfig](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig) extension supports this feature as well. Please take a look at EditorConfig
+if you want the same behaviour across multiple editors.
 
 ## Install
 
