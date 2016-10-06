@@ -1,6 +1,13 @@
 'use strict';
-
-import {window, workspace, extensions, Disposable, Position, WorkspaceConfiguration, ExtensionContext} from 'vscode';
+import {
+	workspace,
+	Disposable,
+	Position,
+	WorkspaceConfiguration,
+	ExtensionContext,
+	TextDocumentWillSaveEvent,
+	TextEdit
+} from 'vscode';
 import {EOL} from 'os';
 
 export function activate(context: ExtensionContext) {
@@ -21,7 +28,7 @@ class FinalNewLineController {
 
 		let subscriptions: Disposable[] = [];
 
-		workspace.onDidSaveTextDocument(this._onDocumentSaved, this, subscriptions);
+		workspace.onWillSaveTextDocument(this._onWillDocumentSave, this, subscriptions);
 		workspace.onDidChangeConfiguration(this._onConfigChanged, this, subscriptions);
 
 		this._disposable = Disposable.from(...subscriptions);
@@ -31,29 +38,22 @@ class FinalNewLineController {
 		this._disposable.dispose();
 	}
 
-	private _onDocumentSaved() {
+	private _onWillDocumentSave(e: TextDocumentWillSaveEvent) {
 		if (this._config.get('insertFinalNewline', false) === true) {
-			this._insertFinalNewline();
+			const doc = e.document;
+			const lastLine = doc.lineAt(doc.lineCount - 1);
+
+			if (lastLine.isEmptyOrWhitespace === false) {
+				const edit = TextEdit.insert(new Position(doc.lineCount - 1, lastLine.text.length), EOL);
+
+				e.waitUntil(Promise.resolve([
+					edit
+				]));
+			}
 		}
 	}
 
 	private _onConfigChanged() {
 		this._config = workspace.getConfiguration('files');
-	}
-
-	private _insertFinalNewline() {
-		if (!window.activeTextEditor) {
-			return;
-		}
-
-		const doc = window.activeTextEditor.document;
-
-		const lastLine = doc.lineAt(doc.lineCount - 1);
-
-		if (lastLine.isEmptyOrWhitespace === false) {
-			window.activeTextEditor.edit(editBuilder => {
-				editBuilder.insert(new Position(doc.lineCount - 1, lastLine.text.length), EOL);
-			}).then(() => doc.save());
-		}
 	}
 }
