@@ -4,7 +4,7 @@
   "description": "Inserts a final newline when saving the document.",
   "publisher": "samverschueren",
   "engines": {
-    "vscode": "^1.6.x"
+    "vscode": "^1.6.0"
   },
   "activationEvents": [
     "*"
