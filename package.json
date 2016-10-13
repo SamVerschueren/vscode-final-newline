@@ -1,6 +1,6 @@
 {
   "name": "final-newline",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Inserts a final newline when saving the document.",
   "publisher": "samverschueren",
   "engines": {
