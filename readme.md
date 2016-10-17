@@ -1,4 +1,4 @@
-# vscode-final-newline [![Unix Build Status](https://travis-ci.org/SamVerschueren/vscode-final-newline.svg?branch=master)](https://travis-ci.org/SamVerschueren/vscode-final-newline) [![Windows Build status](https://ci.appveyor.com/api/projects/status/j5u5v2jb69uwqr1c?svg=true)](https://ci.appveyor.com/project/SamVerschueren/vscode-final-newline)
+# vscode-final-newline [![Unix Build Status](https://travis-ci.org/SamVerschueren/vscode-final-newline.svg?branch=master)](https://travis-ci.org/SamVerschueren/vscode-final-newline)
 
 > Inserts a final newline when saving the document.
 
