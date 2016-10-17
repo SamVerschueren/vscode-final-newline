@@ -5,3 +5,5 @@ typings/**
 .gitignore
 tsconfig.json
 screenshot.png
+test/**
+out/test/**

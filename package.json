@@ -11,13 +11,19 @@
   ],
   "main": "./out/extension",
   "scripts": {
+    "test": "node ./node_modules/vscode/bin/test",
     "vscode:prepublish": "tsc -p ./",
     "compile": "tsc -watch -p ./",
     "postinstall": "node ./node_modules/vscode/bin/install"
   },
   "devDependencies": {
+    "@types/mocha": "^2.2.32",
     "@types/node": "^6.0.45",
-    "vscode": "*"
+    "@types/tempfile": "^1.1.5",
+    "mkdirp": "^0.5.1",
+    "tempfile": "^1.1.1",
+    "vscode": "*",
+    "vscode-test-utils": "0.0.6"
   },
   "contributes": {
     "configuration": {
